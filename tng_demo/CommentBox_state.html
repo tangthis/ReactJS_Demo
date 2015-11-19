@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Hello React</title>
+    <script src="build/react.js"></script>
+    <script src="build/JSXTransformer.js"></script>
+    <script src="build/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/jsx">
+    // jsx 比纯js要更好理解
+    /*
+      var CommentBox = React.createClass({
+        render:function(){
+          return (
+            <div className="commentBox">
+            Hello,world! I am a CommentBox.
+            </div>
+            );
+        }
+      });
+    */
+   
+      var Comment = React.createClass({
+        render:function(){
+          return (
+            <div className="comment">
+              <h2 className="commentAuthor">
+              {this.props.author}
+              </h2>
+              {this.props.children}
+            </div>
+            );
+        }
+      });
+
+      var CommentList = React.createClass({
+        render:function(){
+          var commentNodes = this.props.data.map(function(comment){
+            return (
+              <Comment author={comment.author}>
+              {comment.text}
+              </Comment>
+              );
+          });
+          return (
+          <div className="commentList">
+            {commentNodes}
+          </div>
+          );
+        }
+      });
+
+      var CommentForm = React.createClass({
+        render:function(){
+          return (
+            <div className="commentForm">
+              Hello,world!I am a CommentForm.
+            </div>
+            );
+        }
+      });
+
+      //组合组
+      var CommentBox = React.createClass({
+        getInitialState:function(){
+          return {data:[
+            {author: "Pete Hunt", text: "这是使用this.state设置的一条评论"},
+            {author: "Jordan Walke", text: "This is *another* comment"}
+            ]};
+        },
+        render:function(){
+          return (
+            <div className="commentBox">
+              <h1>Comments</h1>
+              <CommentList data={this.state.data}/>
+              <CommentForm />
+            </div>
+            );
+        }
+      });
+
+
+      React.render(
+        <CommentBox/>,
+        document.getElementById('content')
+        );
+    </script>
+  </body>
+</html>
