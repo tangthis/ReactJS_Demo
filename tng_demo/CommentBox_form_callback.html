@@ -59,9 +59,9 @@
         },
         render:function(){
           return (
-            <form className="commentForm">
-              <input type="text" placeholder="Your name" />
-              <input type="text" placeholder="Say something..." />
+            <form className="commentForm" onSubmit={this.handleSubmit}>
+              <input type="text" placeholder="Your name" ref="author"/>
+              <input type="text" placeholder="Say something..." ref="text"/>
               <input type="submit" value="Post" />
             </form>
             );
@@ -84,7 +84,13 @@
         getInitialState:function(){
           return {data:[]};
         },
-        handleCommentSubmit:function(){
+        handleCommentSubmit:function(comment){
+          // 乐观更新
+          var comments = this.state.data;
+          var newComments = comments.concat([comment]);
+          this.setState({data:newComments});
+
+          // 服务器
           $.ajax({
 			      url: this.props.url,
 			      dataType: 'json',
@@ -100,7 +106,7 @@
         },
         componentDidMount:function(){
           this.loadCommentsFromServer();
-    			setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    			//setInterval(this.loadCommentsFromServer, this.props.pollInterval);
         },
         render:function(){
           return (
